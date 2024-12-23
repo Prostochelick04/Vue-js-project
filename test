@@ -1,0 +1,116 @@
+import os
+
+project_name = "vue_random_project"
+folders = [
+    f"{project_name}/src",
+    f"{project_name}/src/components",
+    f"{project_name}/public"
+]
+files = {
+    f"{project_name}/package.json": '''{
+  "name": "vue-random-project",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.1",
+    "vite": "^4.4.9"
+  }
+}''',
+    f"{project_name}/vite.config.js": '''import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+  plugins: [vue()],
+});''',
+    f"{project_name}/index.html": '''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Random Project</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>''',
+    f"{project_name}/src/main.js": '''import { createApp } from 'vue';
+import App from './App.vue';
+
+createApp(App).mount('#app');''',
+    f"{project_name}/src/App.vue": '''<template>
+  <div id="app">
+    <h1>Welcome to Vue Random Project!</h1>
+    <p>This is a simple Vue.js application.</p>
+    <RandomMessage />
+  </div>
+</template>
+
+<script>
+import RandomMessage from './components/RandomMessage.vue';
+
+export default {
+  components: {
+    RandomMessage,
+  },
+};
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>''',
+    f"{project_name}/src/components/RandomMessage.vue": '''<template>
+  <div>
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      message: this.getRandomMessage(),
+    };
+  },
+  methods: {
+    getRandomMessage() {
+      const messages = [
+        'Hello, Vue!',
+        'Welcome to this project!',
+        'Have a great day!',
+      ];
+      return messages[Math.floor(Math.random() * messages.length)];
+    },
+  },
+};
+</script>
+
+<style scoped>
+p {
+  color: #42b983;
+  font-size: 1.2em;
+}
+</style>'''
+}
+
+# Создание файлов и папок
+for folder in folders:
+    os.makedirs(folder, exist_ok=True)
+
+for file_path, content in files.items():
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(content)
+
+f"Проект '{project_name}' успешно создан."
